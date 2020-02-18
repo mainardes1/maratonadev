@@ -3,10 +3,76 @@ html, body{
     margin: 0;
 }
 
+*{
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Verdana', 'Roboto';
+    height: 100vh;
+    background-color: #eeeeee;
+}
+
+header h1, main h2{
+    /*Titulos*/
+    margin-bottom: 70px;
+
+}
+
+/* Estrutura */
 header, main,footer{
 
     text-align: center;
 
+}
+
+/*Header*/
+
+header button{
+
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #fa2323;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+/* Formulario */
+section.form{
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 45px;
+    
+    background-color: #fa2323;
+    padding: 16px 64px;
+
+}
+
+form input,
+form button{
+    
+    width: 100%;
+    /* espaçamentos */
+    margin-bottom: 4px;
+    /* corrigindo comportamento padrão do css*/
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: 1px red solid;
+
+}
+
+/* Main */
+header, .form, main {
+
+    margin: 0px auto 80px auto;
+
+    width: 90%;
+    max-width: 500px;
+    
 }
 
 .donors{
@@ -16,15 +82,9 @@ header, main,footer{
 
 }
 
-section.form{
+footer{
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-}
-
-header, .form, main {
-
-    margin-bottom: 80px;
-
+    margin-top: auto;
+    padding: 16;
+    border: 1px solid #eee;
 }
