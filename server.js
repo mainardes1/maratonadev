@@ -7,6 +7,17 @@ server.use(express.static("public"));
 
 //habilitar body do form
 server.use(express.urlencoded({ extended: true}))
+
+//conexão com o banco
+
+const Pool = require("pg").Pool;
+const db = new Pool({
+    user: 'postgres',
+    password: '25a09l97l',
+    host: 'localhost',
+    port: 5432,
+    database: 'bloodbank'
+});
  
 // configurando a template engine (nunjucks)
 
@@ -16,14 +27,16 @@ nunjucks.configure("./", {
     //noCache: true, para não buscar a informação no cache
 });
 
-//lista de doadores
-const donors = [
-    
-]
-
 // configurar a exibição de página
 server.get("/", function(req, res){
-    return res.render("index.html", {donors});
+    db.query("SELECT * FROM doadores", function(err, result){
+
+        if (err) return res.send("Erro de consulta");
+        const donors = result.rows;
+        return res.render("index.html", {donors});
+
+    });
+    
 });
 
 server.post("/", function(req, res){
@@ -31,13 +44,27 @@ server.post("/", function(req, res){
     const name = req.body.name;
     const email = req.body.email;
     const blood = req.body.blood;
-    //adicionar valores ao array donors
-    donors.push({
-        name: name,
-        blood:  blood,
+
+    if (name == "" || email == "" || blood == ""){
+
+        return res.send("Preencha todos os campos!");
+
+    }
+
+    //adicionar valores ao banco
+    const query = `INSERT INTO doadores ("name", "email", "blood") 
+                   VALUES ($1, $2, $3)` 
+
+    const values = [name, email, blood];
+    db.query(query, values, function(err){
+        // fluxo de erro
+        if (err) return res.send ('erro no banco');
+
+        return res.redirect("/");
+
     });
 
-    return res.redirect("/");
+    
 
 });
 
